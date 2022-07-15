@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public class Client {
 
+    private final static int OTHER_TASK = 2000;
+
     public static void main(String[] args) throws IOException {
         InetSocketAddress socketAddress = new InetSocketAddress("127.0.0.1",
                 23334);
@@ -23,11 +25,15 @@ public class Client {
                         ByteBuffer.wrap(
                                 msg.getBytes(StandardCharsets.UTF_8)));
 
+                Thread.sleep(OTHER_TASK);
+
                 int bytesCount = socketChannel.read(inputBuffer);
                 System.out.println(new String(inputBuffer.array(), 0, bytesCount,
                         StandardCharsets.UTF_8).trim());
                 inputBuffer.clear();
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             socketChannel.close();
         }
